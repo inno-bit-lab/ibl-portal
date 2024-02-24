@@ -1,9 +1,8 @@
 application {
   config {
-    applicationType gateway,
+    applicationType monolithic,
     baseName IBLPoortal,
     packageName it.ibl.portal.gateway,
-    serviceDiscoveryType eureka,
     authenticationType jwt,
     clientFramework angular,
     prodDatabaseType mongo,
@@ -17,55 +16,9 @@ application {
     nativeLanguage it, // Imposta la lingua principale
     languages [en, it]
   }
-  entities *
+  entities Customer, Project, Resource, State, TimeSheet
 }
 
-application {
-  config {
-    baseName Customer,
-    applicationType microservice,
-    packageName it.ibl.service.customer,
-    authenticationType jwt,
-    databaseType mongodb, // Modificato per specificare l'uso di MongoDB
-    prodDatabaseType mongodb, // Specifica MongoDB come DB di produzione
-    devDatabaseType mongodb, // Utilizza MongoDB anche per lo sviluppo
-    cacheProvider hazelcast,
-    enableHibernateCache false, // Disabilitato poiché non applicabile a MongoDB
-    buildTool maven,
-    testFrameworks [cucumber],
-    enableSwaggerCodegen true,
-    serverPort 8081,
-    clientPackageManager npm,
-    enableTranslation true,
-    nativeLanguage it,
-    languages [it, en]
-  }
-  entities Customer, Project
-}
-
-
-application {
-  config {
-    baseName Resources,
-    applicationType microservice,
-    packageName it.ibl.service.resources,
-    authenticationType jwt,
-    databaseType mongodb, // Modificato per specificare l'uso di MongoDB
-    prodDatabaseType mongodb, // Specifica MongoDB come DB di produzione
-    devDatabaseType mongodb, // Utilizza MongoDB anche per lo sviluppo
-    cacheProvider hazelcast,
-    enableHibernateCache false, // Disabilitato poiché non applicabile a MongoDB
-    buildTool maven,
-    testFrameworks [cucumber],
-    enableSwaggerCodegen true,
-    serverPort 8082,
-    clientPackageManager npm,
-    enableTranslation true,
-    nativeLanguage it,
-    languages [it, en]
-  }
-  entities Resource, TimeSheet
-}
 
 entity Customer {
   name String required,
@@ -123,7 +76,5 @@ relationship ManyToMany {
   Project{resources(firstName)} to TimeSheet{projects(code)}
 }
 
-microservice Customer, Project with Customer
-microservice Resource, TimeSheet with Resources
-microservice Customer, Project, Resource, TimeSheet with IBLPoortal
+
 
